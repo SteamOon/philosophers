@@ -6,7 +6,7 @@
 /*   By: smoon <smoon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 10:36:08 by smoon             #+#    #+#             */
-/*   Updated: 2025/05/20 16:49:25 by smoon            ###   ########.fr       */
+/*   Updated: 2025/05/20 17:33:42 by smoon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,7 @@ int	main(int argc, char *argv[])
 	join_odd_threads(&args.thread_arr, args.philo_num);
 	uninitialise_mutex(args.mutex_arr, args.philo_num);
 	free_philos(args.philo_arr, args.philo_num);
+	free(args.thread_arr);
 	free(args.forks);
 }
 

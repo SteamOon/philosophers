@@ -6,7 +6,7 @@
 /*   By: smoon <smoon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 14:05:07 by smoon             #+#    #+#             */
-/*   Updated: 2025/05/20 16:32:05 by smoon            ###   ########.fr       */
+/*   Updated: 2025/05/20 17:33:05 by smoon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ int	join_even_threads(pthread_t **thread_arr, int num)
 	i = 0;
 	while (i < num)
 	{
-		if (pthread_join(*thread_arr[i], NULL) != 0)
+		if (pthread_join((*thread_arr)[i], NULL) != 0)
 			return (1);
 		i += 2;
 	}
@@ -59,7 +59,7 @@ int	join_odd_threads(pthread_t **thread_arr, int num)
 	i = 1;
 	while (i < num)
 	{
-		if (pthread_join(*thread_arr[i], NULL) != 0)
+		if (pthread_join((*thread_arr)[i], NULL) != 0)
 			return (1);
 		i += 2;
 	}

@@ -6,7 +6,7 @@
 /*   By: smoon <smoon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 13:53:54 by smoon             #+#    #+#             */
-/*   Updated: 2025/05/20 17:12:50 by smoon            ###   ########.fr       */
+/*   Updated: 2025/05/20 17:31:07 by smoon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,6 @@ int	initialise_forks(int **fork_arr, int num, pthread_mutex_t *mutex_arr)
 static int	initialise_philos(t_args *args, t_philo **philo_arr)
 {
 	int	i;
-	pthread_mutex_t	*mutex_0;
 
 	i = 0;
 	while (i < args->philo_num)
@@ -67,11 +66,10 @@ static int	initialise_philos(t_args *args, t_philo **philo_arr)
 		gettimeofday(&philo_arr[i]->time_last_ate, NULL);
 		philo_arr[i]->left_fork = &args->forks[i];
 		philo_arr[i]->left_mutex = &args->mutex_arr[i];
-		mutex_0 = philo_arr[i]->left_mutex;
-		if (i == args->philo_num)
+		if (i == args->philo_num - 1)
 		{
 			philo_arr[i]->right_fork = &args->forks[0];
-			philo_arr[i]->right_mutex = mutex_0;
+			philo_arr[i]->right_mutex = &args->mutex_arr[0];
 		}
 		else
 		{

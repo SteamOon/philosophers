@@ -6,7 +6,7 @@
 /*   By: smoon <smoon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 15:50:26 by smoon             #+#    #+#             */
-/*   Updated: 2025/05/20 17:09:45 by smoon            ###   ########.fr       */
+/*   Updated: 2025/05/20 17:30:13 by smoon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	print_philos(t_philo **philo_arr)
 	while (philo_arr[i])
 	{
 		printf("Philo %3d: Left fork: %p (%d), M:%p\n", philo_arr[i]->num, philo_arr[i]->left_fork, *philo_arr[i]->left_fork, philo_arr[i]->left_mutex);
-		printf("Philo %3d: Left fork: %p (%d), M:%p\n", philo_arr[i]->num, philo_arr[i]->right_fork, *philo_arr[i]->right_fork, philo_arr[i]->right_mutex);
+		printf("      %3d Right fork: %p (%d), M:%p\n", i, philo_arr[i]->right_fork, *philo_arr[i]->right_fork, philo_arr[i]->right_mutex);
 		i++;
 	}
 }
