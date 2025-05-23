@@ -6,7 +6,7 @@
 /*   By: smoon <smoon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 14:05:07 by smoon             #+#    #+#             */
-/*   Updated: 2025/05/20 17:33:05 by smoon            ###   ########.fr       */
+/*   Updated: 2025/05/23 12:17:59 by smoon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,12 @@ int	uninitialise_mutex(pthread_mutex_t *mutex_arr, int num)
 
 int	free_philos(t_philo **philo_arr, int num)
 {
+	num--;
 	while (num >= 0)
 	{
+
+		pthread_mutex_destroy(&philo_arr[num]->eat_time_mutex);
+		pthread_mutex_destroy(&philo_arr[num]->eat_count_mutex);
 		free(philo_arr[num]);
 		// printf("%p freed\n", &philo_arr[num]);
 		num--;

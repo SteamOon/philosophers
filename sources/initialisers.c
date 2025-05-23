@@ -6,7 +6,7 @@
 /*   By: smoon <smoon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 13:53:54 by smoon             #+#    #+#             */
-/*   Updated: 2025/05/20 17:31:07 by smoon            ###   ########.fr       */
+/*   Updated: 2025/05/23 12:17:59 by smoon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,68 +54,67 @@ int	initialise_forks(int **fork_arr, int num, pthread_mutex_t *mutex_arr)
 	return (0);
 }
 
-
-static int	initialise_philos(t_args *args, t_philo **philo_arr)
+static int	initialise_philos(t_data *data, t_philo **philo_arr)
 {
 	int	i;
 
 	i = 0;
-	while (i < args->philo_num)
+	while (i < data->args->philo_num)
 	{
 		philo_arr[i]->num = i + 1;
-		gettimeofday(&philo_arr[i]->time_last_ate, NULL);
-		philo_arr[i]->left_fork = &args->forks[i];
-		philo_arr[i]->left_mutex = &args->mutex_arr[i];
-		if (i == args->philo_num - 1)
+		philo_arr[i]->eat_count = 0;
+		philo_arr[i]->left_fork = &data->forks[i];
+		philo_arr[i]->left_mutex = &data->mutex_arr[i];
+		if (i == data->args->philo_num - 1)
 		{
-			philo_arr[i]->right_fork = &args->forks[0];
-			philo_arr[i]->right_mutex = &args->mutex_arr[0];
+			philo_arr[i]->right_fork = &data->forks[0];
+			philo_arr[i]->right_mutex = &data->mutex_arr[0];
 		}
 		else
 		{
-			philo_arr[i]->right_fork = &args->forks[i + 1];
-			philo_arr[i]->right_mutex = &args->mutex_arr[i + 1];
+			philo_arr[i]->right_fork = &data->forks[i + 1];
+			philo_arr[i]->right_mutex = &data->mutex_arr[i + 1];
 		}
-		philo_arr[i]->time_to_die = args->time_to_die;
-		philo_arr[i]->time_to_eat = args->time_to_eat;
-		philo_arr[i]->time_to_sleep = args->time_to_sleep;
-		philo_arr[i]->mutex_arr = args->mutex_arr;
-		printf("Philo %d create time: %ld%06ld\n", philo_arr[i]->num, philo_arr[i]->time_last_ate.tv_sec, philo_arr[i]->time_last_ate.tv_usec);
+		philo_arr[i]->args = data->args;
+		pthread_mutex_init(&philo_arr[i]->eat_time_mutex, NULL);
+		pthread_mutex_init(&philo_arr[i]->eat_count_mutex, NULL);
+		philo_arr[i]->last_meal = cur_time(data->args->start_time);
+		printf("Philo %d create time: %d\n", philo_arr[i]->num, philo_arr[i]->last_meal);
 		i++;
 	}
 	philo_arr[i] = NULL;
 	return (0);
 }
 
-int	allocate_philos(t_args *args)
+int	allocate_philos(t_data *data)
 {
 	int	i;
 	t_philo **philo_arr;
 
 	i = 0;
-	philo_arr = malloc((args->philo_num + 1) * (sizeof(*philo_arr)));
+	philo_arr = malloc((data->args->philo_num + 1) * (sizeof(*philo_arr)));
 	// printf("%p allocated\n", &philo_arr);
 	if (!philo_arr)
 	{
-		free(args->forks);
-		uninitialise_mutex(args->mutex_arr, args->philo_num);
+		free(data->forks);
+		uninitialise_mutex(data->mutex_arr, data->args->philo_num);
 		return (malloc_error());
 	}
-	while (i < args->philo_num)
+	while (i < data->args->philo_num)
 	{
 		philo_arr[i] = malloc(sizeof(**philo_arr));
 		// printf("%p allocated\n", &philo_arr[i]);
 		if (!philo_arr[i])
 		{
-			free(args->forks);
+			free(data->forks);
 			free_philos(philo_arr, i - 1);
-			uninitialise_mutex(args->mutex_arr, args->philo_num);
+			uninitialise_mutex(data->mutex_arr, data->args->philo_num);
 			return (malloc_error());
 		}
 		i++;
 	}
-	initialise_philos(args, philo_arr);
-	args->philo_arr = philo_arr;
+	initialise_philos(data, philo_arr);
+	data->philo_arr = philo_arr;
 	return (0);
 }
 

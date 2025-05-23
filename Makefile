@@ -6,12 +6,12 @@
 #    By: smoon <smoon@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/22 15:05:46 by smoon             #+#    #+#              #
-#    Updated: 2025/05/20 16:00:09 by smoon            ###   ########.fr        #
+#    Updated: 2025/05/23 15:25:35 by smoon            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -g
+CFLAGS = -Wall -Wextra -Werror -g #-fsanitize=thread
 
 INCLUDES = -I./includes
 
@@ -28,6 +28,7 @@ SOURCES = sources/main.c \
 			sources/ft_isdigit.c \
 			sources/ft_putstr_fd.c \
 			sources/initialisers.c \
+			sources/monitoring.c \
 			sources/testing.c \
 			sources/uninitialisers.c \
 			sources/utils.c

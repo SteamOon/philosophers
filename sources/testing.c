@@ -6,7 +6,7 @@
 /*   By: smoon <smoon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 15:50:26 by smoon             #+#    #+#             */
-/*   Updated: 2025/05/20 17:30:13 by smoon            ###   ########.fr       */
+/*   Updated: 2025/05/22 11:06:44 by smoon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	print_args(t_args args)
 	printf("     Time to die: %4d\n", args.time_to_die);
 	printf("   Time to sleep: %4d\n", args.time_to_sleep);
 	printf("     Time to eat: %4d\n", args.time_to_eat);
-	printf("    Times to eat: %4d\n", args.eat_count);
+	printf("    Times to eat: %4d\n", args.eat_target);
 
 }
 
@@ -35,15 +35,15 @@ void	print_philos(t_philo **philo_arr)
 	}
 }
 
-void	print_forks(t_args *args)
+void	print_forks(t_data *data)
 {
 	int	i;
 
 	i = 0;
 	printf("forks: ");
-	while (i < args->philo_num)
+	while (i < data->args->philo_num)
 	{
-		printf("%d, ", args->forks[i]);
+		printf("%d, ", data->forks[i]);
 		i++;
 	}
 	printf("\n");
