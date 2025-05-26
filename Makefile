@@ -6,7 +6,7 @@
 #    By: smoon <smoon@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/22 15:05:46 by smoon             #+#    #+#              #
-#    Updated: 2025/05/23 15:25:35 by smoon            ###   ########.fr        #
+#    Updated: 2025/05/26 13:17:08 by smoon            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,6 +29,8 @@ SOURCES = sources/main.c \
 			sources/ft_putstr_fd.c \
 			sources/initialisers.c \
 			sources/monitoring.c \
+			sources/printing.c \
+			sources/simulation.c \
 			sources/testing.c \
 			sources/uninitialisers.c \
 			sources/utils.c

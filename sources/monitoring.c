@@ -6,7 +6,7 @@
 /*   By: smoon <smoon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 14:21:56 by smoon             #+#    #+#             */
-/*   Updated: 2025/05/23 15:08:16 by smoon            ###   ########.fr       */
+/*   Updated: 2025/05/26 14:02:42 by smoon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,12 +35,10 @@ static int	has_eaten_enough(t_philo *philo)
 		return (0);
 }
 
-void	*monitor_threads(void *data_ptr)
+void	*monitor_threads(t_data	*data)
 {
 	int			i;
-	t_data	*data;
 
-	data = (t_data *)data_ptr;
 	while (1)
 	{
 		i = 0;
@@ -50,7 +48,7 @@ void	*monitor_threads(void *data_ptr)
 				<= cur_time(data->args->start_time))
 			{
 				pthread_mutex_lock(&data->args->run_mutex);
-				printf("%d %d died\n", cur_time(data->args->start_time), data->philo_arr[i]->num);
+				died_print(data->args->start_time, data->philo_arr[i]->num, &data->args->printf_mutex);
 				data->args->run_flag = 0;
 				pthread_mutex_unlock(&data->args->run_mutex);
 				break ;

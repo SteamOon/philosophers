@@ -6,7 +6,7 @@
 /*   By: smoon <smoon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 13:53:54 by smoon             #+#    #+#             */
-/*   Updated: 2025/05/23 12:17:59 by smoon            ###   ########.fr       */
+/*   Updated: 2025/05/26 14:44:20 by smoon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,8 +78,6 @@ static int	initialise_philos(t_data *data, t_philo **philo_arr)
 		philo_arr[i]->args = data->args;
 		pthread_mutex_init(&philo_arr[i]->eat_time_mutex, NULL);
 		pthread_mutex_init(&philo_arr[i]->eat_count_mutex, NULL);
-		philo_arr[i]->last_meal = cur_time(data->args->start_time);
-		printf("Philo %d create time: %d\n", philo_arr[i]->num, philo_arr[i]->last_meal);
 		i++;
 	}
 	philo_arr[i] = NULL;
@@ -118,28 +116,30 @@ int	allocate_philos(t_data *data)
 	return (0);
 }
 
-int	initialise_even_threads(pthread_t **thread_arr, t_philo **philo_arr, int num)
+int	initialise_even_threads(t_data *data)
 {
 	int	i;
 
 	i = 0;
-	while (i < num)
+	while (i < data->args->philo_num)
 	{
-		if (pthread_create(&(*thread_arr)[i], NULL, &even_eating, philo_arr[i]) != 0)
+		if (i == data->args->philo_num - 1)
+			usleep(10);
+		if (pthread_create(&data->thread_arr[i], NULL, &start_sim, data->philo_arr[i]) != 0)
 			return (1);
 		i += 2;
 	}
 	return (0);
 }
 
-int	initialise_odd_threads(pthread_t **thread_arr, t_philo **philo_arr, int num)
+int	initialise_odd_threads(t_data *data)
 {
 	int	i;
 
 	i = 1;
-	while (i < num)
+	while (i < data->args->philo_num)
 	{
-		if (pthread_create(&(*thread_arr)[i], NULL, &odd_eating, philo_arr[i]) != 0)
+		if (pthread_create(&data->thread_arr[i], NULL, &start_sim, data->philo_arr[i]) != 0)
 			return (1);
 		i += 2;
 	}
