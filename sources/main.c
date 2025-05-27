@@ -6,7 +6,7 @@
 /*   By: smoon <smoon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 10:36:08 by smoon             #+#    #+#             */
-/*   Updated: 2025/05/26 17:12:06 by smoon            ###   ########.fr       */
+/*   Updated: 2025/05/27 11:37:58 by smoon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,14 @@ static t_args	*initialise_arg_array(int argc, char *argv[])
 	args->time_to_die = ft_atoi(argv[2]);
 	args->time_to_eat = ft_atoi(argv[3]);
 	args->time_to_sleep = ft_atoi(argv[4]);
-	// args->time_to_think = (args->time_to_die - args->time_to_eat - args->time_to_sleep) / 3;
-	// if (args->time_to_think < 1)
-	// 	args->time_to_think = 1;
-	args->time_to_think = args->time_to_eat / 10;
+	if (args->philo_num % 2 == 0)
+	{
+		args->time_to_think = (args->time_to_die - args->time_to_eat - args->time_to_sleep) / 2 - 10;
+		if (args->time_to_think < 1)
+			args->time_to_think = 1;
+	}
+	else
+		args->time_to_think = args->time_to_eat;
 	if (argc == 6)
 		args->eat_target = ft_atoi(argv[5]);
 	else
@@ -50,7 +54,7 @@ static t_args	*initialise_arg_array(int argc, char *argv[])
 static void	set_start_time(t_data *data)
 {
 	pthread_mutex_lock(&data->args->start_t_mutex);
-	data->args->start_time = cur_time(0);
+	data->args->start_time = start_time();
 	pthread_mutex_unlock(&data->args->start_t_mutex);
 }
 
@@ -93,5 +97,6 @@ int	main(int argc, char *argv[])
 	free_philos(data.philo_arr, data.args->philo_num);
 	free(data.thread_arr);
 	free(data.forks);
+	free(data.args);
 }
 

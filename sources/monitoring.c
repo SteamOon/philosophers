@@ -6,7 +6,7 @@
 /*   By: smoon <smoon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 14:21:56 by smoon             #+#    #+#             */
-/*   Updated: 2025/05/26 14:02:42 by smoon            ###   ########.fr       */
+/*   Updated: 2025/05/27 11:17:39 by smoon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void	*monitor_threads(t_data	*data)
 	while (1)
 	{
 		i = 0;
-		while (data->philo_arr[i])
+		while (i < data->args->philo_num)
 		{
 			if (data->args->time_to_die + get_last_eat_time(data->philo_arr[i])
 				<= cur_time(data->args->start_time))

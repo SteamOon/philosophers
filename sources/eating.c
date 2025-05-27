@@ -6,7 +6,7 @@
 /*   By: smoon <smoon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 12:52:04 by smoon             #+#    #+#             */
-/*   Updated: 2025/05/26 17:05:28 by smoon            ###   ########.fr       */
+/*   Updated: 2025/05/27 12:05:46 by smoon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 static void	update_eat_stats(t_philo *philo, int time)
 {
 	pthread_mutex_lock(&philo->eat_time_mutex);
-	philo->last_meal = time + philo->args->time_to_eat - 45;
+	philo->last_meal = time + philo->args->time_to_eat - 50;
 	pthread_mutex_unlock(&philo->eat_time_mutex);
 	// pthread_mutex_lock(&philo->args->printf_mutex);
 	// printf("%d updated last meal %d\n", philo->num, philo->last_meal);
@@ -45,6 +45,13 @@ static int	get_eat_time(t_philo *philo, int old_time)
 	if (time < 0)
 		time = 0;
 	return (time);
+}
+
+static void	wait_before_eat(t_philo *philo)
+{
+	while (cur_time(philo->args->start_time) + philo->args->time_to_eat < philo->last_meal - 30
+		+ philo->args->time_to_die)
+		usleep(1);
 }
 
 void	*odd_eating(t_philo *philo)
@@ -91,7 +98,8 @@ void	*odd_eating(t_philo *philo)
 		if (is_running(philo->args) == 0)
 			break ;
 		think_print(philo->args->start_time, philo->num, &philo->args->printf_mutex);
-		usleep(philo->args->time_to_think);
+		// usleep(philo->args->time_to_think);
+		wait_before_eat(philo);
 	}
 	return (NULL);
 }
@@ -108,7 +116,8 @@ void	*even_eating(t_philo *philo)
 		if (is_running(philo->args) == 0)
 			break ;
 		think_print(philo->args->start_time, philo->num, &philo->args->printf_mutex);
-		usleep(philo->args->time_to_think);
+		// usleep(philo->args->time_to_think);
+		wait_before_eat(philo);
 		// try_fork_print(philo->args->start_time, philo->num, &philo->args->printf_mutex);
 		pthread_mutex_lock(philo->right_mutex);
 		*philo->right_fork = philo->num;
