@@ -6,7 +6,7 @@
 #    By: smoon <smoon@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/22 15:05:46 by smoon             #+#    #+#              #
-#    Updated: 2025/05/28 10:45:33 by smoon            ###   ########.fr        #
+#    Updated: 2025/05/28 11:43:59 by smoon            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,6 +23,7 @@ OBJ_DIR = objects
 
 SOURCES = sources/main.c \
 			sources/eating.c \
+			sources/eating2.c \
 			sources/errors.c \
 			sources/ft_atoi.c \
 			sources/ft_isdigit.c \

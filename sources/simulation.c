@@ -6,7 +6,7 @@
 /*   By: smoon <smoon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 13:02:03 by smoon             #+#    #+#             */
-/*   Updated: 2025/05/27 16:36:09 by smoon            ###   ########.fr       */
+/*   Updated: 2025/05/28 11:15:38 by smoon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,12 @@ void	*start_sim(void *philo_ptr)
 	t_philo	*philo;
 
 	philo = (t_philo *)philo_ptr;
+	pthread_mutex_lock(&philo->eat_time_mutex);
+	philo->last_meal = 0;
+	pthread_mutex_unlock(&philo->eat_time_mutex);
+	pthread_mutex_lock(&philo->eat_count_mutex);
+	philo->eat_count = 0;
+	pthread_mutex_unlock(&philo->eat_count_mutex);
 	while (ready_to_start(philo->args) == 0)
 		usleep(1);
 	if (philo->args->philo_num == 1)

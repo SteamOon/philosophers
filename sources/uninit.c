@@ -6,7 +6,7 @@
 /*   By: smoon <smoon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 14:05:07 by smoon             #+#    #+#             */
-/*   Updated: 2025/05/28 10:45:04 by smoon            ###   ########.fr       */
+/*   Updated: 2025/05/28 12:01:31 by smoon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ int	uninit_mutex(pthread_mutex_t *mutex_arr, int num)
 		num--;
 	}
 	free(mutex_arr);
-	// printf("%p freed\n", &mutex_arr);
 	return (1);
 }
 
@@ -30,15 +29,12 @@ int	free_philos(t_philo **philo_arr, int num)
 	num--;
 	while (num >= 0)
 	{
-
 		pthread_mutex_destroy(&philo_arr[num]->eat_time_mutex);
 		pthread_mutex_destroy(&philo_arr[num]->eat_count_mutex);
 		free(philo_arr[num]);
-		// printf("%p freed\n", &philo_arr[num]);
 		num--;
 	}
 	free(philo_arr);
-	// printf("%p freed\n", &philo_arr);
 	return (0);
 }
 

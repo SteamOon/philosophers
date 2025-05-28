@@ -6,7 +6,7 @@
 /*   By: smoon <smoon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 15:50:26 by smoon             #+#    #+#             */
-/*   Updated: 2025/05/26 16:14:44 by smoon            ###   ########.fr       */
+/*   Updated: 2025/05/28 12:00:22 by smoon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ void	print_args(t_args *args)
 	printf("   Time to sleep: %4d\n", args->time_to_sleep);
 	printf("     Time to eat: %4d\n", args->time_to_eat);
 	printf("    Times to eat: %4d\n", args->eat_target);
-
 }
 
 void	print_philos(t_philo **philo_arr)
@@ -29,8 +28,12 @@ void	print_philos(t_philo **philo_arr)
 	i = 0;
 	while (philo_arr[i])
 	{
-		printf("Philo %3d: Left fork: %p (%d), M:%p\n", philo_arr[i]->num, philo_arr[i]->left_fork, *philo_arr[i]->left_fork, philo_arr[i]->left_mutex);
-		printf("      %3d Right fork: %p (%d), M:%p\n", i, philo_arr[i]->right_fork, *philo_arr[i]->right_fork, philo_arr[i]->right_mutex);
+		printf("Philo %3d: Left fork: %p (%d), M:%p\n",
+			philo_arr[i]->num, philo_arr[i]->left_fork,
+			*philo_arr[i]->left_fork, philo_arr[i]->left_mutex);
+		printf("      %3d Right fork: %p (%d), M:%p\n",
+			i, philo_arr[i]->right_fork, *philo_arr[i]->right_fork,
+			philo_arr[i]->right_mutex);
 		i++;
 	}
 }
@@ -47,15 +50,4 @@ void	print_forks(t_data *data)
 		i++;
 	}
 	printf("\n");
-}
-
-int	try_fork_print(long start_time, int num, pthread_mutex_t *mutex)
-{
-	int	time;
-
-	pthread_mutex_lock(mutex);
-	time = cur_time(start_time);
-	printf("%d %d trying to pick up fork\n", time, num);
-	pthread_mutex_unlock(mutex);
-	return (time);
 }

@@ -6,7 +6,7 @@
 /*   By: smoon <smoon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 10:36:01 by smoon             #+#    #+#             */
-/*   Updated: 2025/05/28 10:45:04 by smoon            ###   ########.fr       */
+/*   Updated: 2025/05/28 11:59:51 by smoon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,11 @@ typedef struct s_data
 //eating
 void			*even_eating(t_philo *philo);
 void			*odd_eating(t_philo *philo);
+//eating2
 void			*single_eating(t_philo *philo);
+int				still_eating(t_philo *philo);
+void			update_eat_stats(t_philo *philo);
+void			wait_before_eat(t_philo *philo);
 
 //errors
 int				arg_num_error(int argc);
@@ -78,20 +82,26 @@ void			ft_putstr_fd(char *s, int fd);
 //init
 int				allocate_philos(t_data *data);
 int				init_forks(int **fork_arr, int num, pthread_mutex_t *mutex_arr);
+//init2
+int				allocations(t_data *data, int argc, char *argv[]);
+t_args			*init_arg_array(int argc, char *argv[]);
+pthread_mutex_t	*init_mutex(int num);
 int				init_even_threads(t_data *data);
 int				init_odd_threads(t_data *data);
-//init2
-pthread_mutex_t	*init_mutex(int num);
+
+//main
+void			mutex_init_and_atoi(t_args *args, char *argv[]);
+void			set_time_to_think(t_args *args);
 
 //monitoring
 void			*monitor_threads(t_data *data);
 
 //printing
-int				eat_print(long start_time, int num, pthread_mutex_t *mutex);
+int				eat_print(t_philo *philo);
 int				died_print(int time, int num, pthread_mutex_t *mutex);
-int				fork_print(long start_time, int num, pthread_mutex_t *mutex);
-int				sleep_print(long start_time, int num, pthread_mutex_t *mutex);
-int				think_print(long start_time, int num, pthread_mutex_t *mutex);
+int				fork_print(t_philo *philo);
+int				sleep_print(t_philo *philo);
+int				think_print(t_philo *philo);
 
 //simulation
 void			*start_sim(void *philo_ptr);
@@ -101,7 +111,6 @@ void			*start_monitor(void *philo_ptr);
 void			print_args(t_args *args);
 void			print_philos(t_philo **philo_arr);
 void			print_forks(t_data *data);
-int				try_fork_print(long start_time, int num, pthread_mutex_t *mutex);
 
 //uninit
 int				free_philos(t_philo **philo_arr, int num);
@@ -109,7 +118,6 @@ int				uninit_mutex(pthread_mutex_t *mutex_arr, int num);
 void			wait_for_threads_and_end(t_data *data);
 
 //utils
-long			msecs_now(void);
 char			is_running(t_args *args);
 int				cur_time(long start_time);
 long			start_time(void);

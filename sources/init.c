@@ -6,7 +6,7 @@
 /*   By: smoon <smoon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 13:53:54 by smoon             #+#    #+#             */
-/*   Updated: 2025/05/28 10:44:18 by smoon            ###   ########.fr       */
+/*   Updated: 2025/05/28 12:01:31 by smoon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ int	init_forks(int **fork_arr, int num, pthread_mutex_t *mutex_arr)
 	int	i;
 
 	*fork_arr = malloc((num) * sizeof(int));
-	// printf("%p allocated\n", &fork_arr);
 	if (!*fork_arr)
 	{
 		uninit_mutex(mutex_arr, num);
@@ -40,7 +39,6 @@ static int	init_philos(t_data *data, t_philo **philo_arr)
 	while (i < data->args->philo_num)
 	{
 		philo_arr[i]->num = i + 1;
-		philo_arr[i]->eat_count = 0;
 		philo_arr[i]->left_fork = &data->forks[i];
 		philo_arr[i]->left_mutex = &data->mutex_arr[i];
 		if (i == data->args->philo_num - 1)
@@ -62,64 +60,39 @@ static int	init_philos(t_data *data, t_philo **philo_arr)
 	return (0);
 }
 
-int	allocate_philos(t_data *data)
+static int	malloc_philos(t_data *data)
 {
 	int	i;
-	t_philo **philo_arr;
 
 	i = 0;
+	while (i < data->args->philo_num)
+	{
+		data->philo_arr[i] = malloc(sizeof(**data->philo_arr));
+		if (!data->philo_arr[i])
+		{
+			free(data->forks);
+			free_philos(data->philo_arr, i - 1);
+			uninit_mutex(data->mutex_arr, data->args->philo_num);
+			return (malloc_error());
+		}
+		i++;
+	}
+	return (0);
+}
+
+int	allocate_philos(t_data *data)
+{
+	t_philo	**philo_arr;
+
 	philo_arr = malloc((data->args->philo_num + 1) * (sizeof(*philo_arr)));
-	// printf("%p allocated\n", &philo_arr);
 	if (!philo_arr)
 	{
 		free(data->forks);
 		uninit_mutex(data->mutex_arr, data->args->philo_num);
 		return (malloc_error());
 	}
-	while (i < data->args->philo_num)
-	{
-		philo_arr[i] = malloc(sizeof(**philo_arr));
-		// printf("%p allocated\n", &philo_arr[i]);
-		if (!philo_arr[i])
-		{
-			free(data->forks);
-			free_philos(philo_arr, i - 1);
-			uninit_mutex(data->mutex_arr, data->args->philo_num);
-			return (malloc_error());
-		}
-		i++;
-	}
-	init_philos(data, philo_arr);
 	data->philo_arr = philo_arr;
-	return (0);
-}
-
-int	init_even_threads(t_data *data)
-{
-	int	i;
-
-	i = 0;
-	while (i < data->args->philo_num)
-	{
-		if (i == data->args->philo_num - 1)
-			usleep(10);
-		if (pthread_create(&data->thread_arr[i], NULL, &start_sim, data->philo_arr[i]) != 0)
-			return (1);
-		i += 2;
-	}
-	return (0);
-}
-
-int	init_odd_threads(t_data *data)
-{
-	int	i;
-
-	i = 1;
-	while (i < data->args->philo_num)
-	{
-		if (pthread_create(&data->thread_arr[i], NULL, &start_sim, data->philo_arr[i]) != 0)
-			return (1);
-		i += 2;
-	}
+	malloc_philos(data);
+	init_philos(data, philo_arr);
 	return (0);
 }

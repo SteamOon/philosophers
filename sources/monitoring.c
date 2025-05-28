@@ -6,13 +6,13 @@
 /*   By: smoon <smoon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 14:21:56 by smoon             #+#    #+#             */
-/*   Updated: 2025/05/28 10:06:53 by smoon            ###   ########.fr       */
+/*   Updated: 2025/05/28 12:00:22 by smoon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo.h"
 
-static int get_last_eat_time(t_philo *philo)
+static int	get_last_eat_time(t_philo *philo)
 {
 	int	time;
 
@@ -35,6 +35,38 @@ static int	has_eaten_enough(t_philo *philo)
 		return (0);
 }
 
+static int	check_if_full(t_data *data, int thread_num)
+{
+	int	i;
+
+	i = 0;
+	if (data->args->eat_target != 0 && thread_num == 0)
+	{
+		while (data->philo_arr[i])
+		{
+			if (has_eaten_enough(data->philo_arr[i]) != 1)
+				break ;
+			i++;
+		}
+		if (!data->philo_arr[i])
+		{
+			pthread_mutex_lock(&data->args->run_mutex);
+			data->args->run_flag = 0;
+			pthread_mutex_unlock(&data->args->run_mutex);
+			return (1);
+		}
+	}
+	return (0);
+}
+
+static void	register_death(t_data *data, int i, int time)
+{
+	died_print(time, data->philo_arr[i]->num, &data->args->printf_mutex);
+	pthread_mutex_lock(&data->args->run_mutex);
+	data->args->run_flag = 0;
+	pthread_mutex_unlock(&data->args->run_mutex);
+}
+
 void	*monitor_threads(t_data	*data)
 {
 	int	i;
@@ -49,29 +81,11 @@ void	*monitor_threads(t_data	*data)
 			if (get_last_eat_time(data->philo_arr[i]) + data->args->time_to_die
 				<= time)
 			{
-				died_print(time, data->philo_arr[i]->num, &data->args->printf_mutex);
-				pthread_mutex_lock(&data->args->run_mutex);
-				data->args->run_flag = 0;
-				pthread_mutex_unlock(&data->args->run_mutex);
+				register_death(data, i, time);
 				break ;
 			}
-			if (data->args->eat_target != 0 && i == 0)
-			{
-				while (data->philo_arr[i])
-				{
-					if (has_eaten_enough(data->philo_arr[i]) != 1)
-						break ;
-					i++;
-				}
-				if (!data->philo_arr[i])
-				{
-					pthread_mutex_lock(&data->args->run_mutex);
-					data->args->run_flag = 0;
-					pthread_mutex_unlock(&data->args->run_mutex);
-					break ;
-				}
-				i = 0;
-			}
+			if (check_if_full(data, i) == 1)
+				break ;
 			i++;
 		}
 		if (is_running(data->args) == 0)

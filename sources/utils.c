@@ -6,7 +6,7 @@
 /*   By: smoon <smoon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 11:39:49 by smoon             #+#    #+#             */
-/*   Updated: 2025/05/28 10:03:12 by smoon            ###   ########.fr       */
+/*   Updated: 2025/05/28 11:46:30 by smoon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,15 +22,8 @@ char	is_running(t_args *args)
 	return (result);
 }
 
-long	msecs_now(void)
-{
-	struct timeval	time;
-
-	gettimeofday(&time, NULL);
-	return (time.tv_sec * 1000000 + time.tv_usec);
-}
-
-// printf("Philo %d create time: %ld\n", philo_arr[i]->num, get_millisecs(philo_arr[i]->time_last_ate, args.start_time));
+// printf("Philo %d create time: %ld\n", philo_arr[i]->num,
+	// get_millisecs(philo_arr[i]->time_last_ate, args.start_time));
 int	cur_time(long start_time)
 {
 	struct timeval	time;
