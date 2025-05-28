@@ -6,7 +6,7 @@
 /*   By: smoon <smoon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 12:52:04 by smoon             #+#    #+#             */
-/*   Updated: 2025/05/28 12:38:40 by smoon            ###   ########.fr       */
+/*   Updated: 2025/05/28 13:05:10 by smoon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,14 +44,14 @@ void	*odd_eating(t_philo *philo)
 	while (still_eating(philo))
 	{
 		pthread_mutex_lock(philo->left_mutex);
+		*philo->left_fork = philo->num;
 		if (is_running(philo->args) == 0)
 			return (unlock_and_return(philo, 1, 0));
-		*philo->left_fork = philo->num;
 		fork_print(philo);
 		pthread_mutex_lock(philo->right_mutex);
+		*philo->right_fork = philo->num;
 		if (is_running(philo->args) == 0)
 			return (unlock_and_return(philo, 1, 1));
-		*philo->right_fork = philo->num;
 		second_fork_and_eat(philo);
 		pthread_mutex_unlock(philo->right_mutex);
 		pthread_mutex_unlock(philo->left_mutex);
@@ -77,14 +77,14 @@ void	*even_eating(t_philo *philo)
 		think_print(philo);
 		wait_before_eat(philo);
 		pthread_mutex_lock(philo->right_mutex);
+		*philo->right_fork = philo->num;
 		if (is_running(philo->args) == 0)
 			return (unlock_and_return(philo, 0, 1));
-		*philo->right_fork = philo->num;
 		fork_print(philo);
 		pthread_mutex_lock(philo->left_mutex);
+		*philo->left_fork = philo->num;
 		if (is_running(philo->args) == 0)
 			return (unlock_and_return(philo, 1, 1));
-		*philo->left_fork = philo->num;
 		second_fork_and_eat(philo);
 		pthread_mutex_unlock(philo->left_mutex);
 		pthread_mutex_unlock(philo->right_mutex);
