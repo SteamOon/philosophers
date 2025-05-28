@@ -6,7 +6,7 @@
 #    By: smoon <smoon@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/22 15:05:46 by smoon             #+#    #+#              #
-#    Updated: 2025/05/28 11:43:59 by smoon            ###   ########.fr        #
+#    Updated: 2025/05/28 12:22:22 by smoon            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -41,8 +41,11 @@ OBJECTS = $(patsubst $(SRC_DIR)/%.c, $(OBJ_DIR)/%.o, $(SOURCES))
 
 all: $(NAME)
 
-objects/%.o: sources/%.c
+objects/%.o: sources/%.c | $(OBJ_DIR)
 	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
+
+$(OBJ_DIR):
+	mkdir -p $(OBJ_DIR)
 
 $(NAME): $(OBJECTS)
 	$(CC) $(CFLAGS) $(INCLUDES) $(OBJECTS) -o $(NAME)
@@ -50,6 +53,7 @@ $(NAME): $(OBJECTS)
 
 clean:
 	rm -f $(OBJECTS)
+	rm -f -d $(OBJ_DIR)
 
 fclean: clean
 	rm -f $(NAME) $(NAME)
