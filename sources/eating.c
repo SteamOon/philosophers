@@ -6,7 +6,7 @@
 /*   By: smoon <smoon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 12:52:04 by smoon             #+#    #+#             */
-/*   Updated: 2025/05/28 12:09:57 by smoon            ###   ########.fr       */
+/*   Updated: 2025/05/28 12:38:40 by smoon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,10 @@ void	*even_eating(t_philo *philo)
 	wait_for_start(philo);
 	while (still_eating(philo))
 	{
+		if (is_running(philo->args) == 0)
+			break ;
+		think_print(philo);
+		wait_before_eat(philo);
 		pthread_mutex_lock(philo->right_mutex);
 		if (is_running(philo->args) == 0)
 			return (unlock_and_return(philo, 0, 1));
@@ -88,10 +92,6 @@ void	*even_eating(t_philo *philo)
 			break ;
 		sleep_print(philo);
 		precise_wait(philo->args->time_to_sleep);
-		if (is_running(philo->args) == 0)
-			break ;
-		think_print(philo);
-		wait_before_eat(philo);
 	}
 	return (NULL);
 }
