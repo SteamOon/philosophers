@@ -1,40 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   initialisers.c                                     :+:      :+:    :+:   */
+/*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: smoon <smoon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 13:53:54 by smoon             #+#    #+#             */
-/*   Updated: 2025/05/26 14:44:20 by smoon            ###   ########.fr       */
+/*   Updated: 2025/05/28 10:44:18 by smoon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo.h"
 
-pthread_mutex_t	*initialise_mutex(int num)
-{
-	int				i;
-	pthread_mutex_t *mutex_arr;
-
-	i = 0;
-	mutex_arr = malloc(num * sizeof(pthread_mutex_t));
-	// printf("%p allocated\n", &mutex_arr);
-	if (!mutex_arr)
-		return (malloc_error(), NULL);
-	while (i < num)
-	{
-		if (pthread_mutex_init(&mutex_arr[i], NULL) == -1)
-		{
-			uninitialise_mutex(mutex_arr, i);
-			return (pthread_error("initialising mutexes"), NULL);
-		}
-		i++;
-	}
-	return (mutex_arr);
-}
-
-int	initialise_forks(int **fork_arr, int num, pthread_mutex_t *mutex_arr)
+int	init_forks(int **fork_arr, int num, pthread_mutex_t *mutex_arr)
 {
 	int	i;
 
@@ -42,7 +20,7 @@ int	initialise_forks(int **fork_arr, int num, pthread_mutex_t *mutex_arr)
 	// printf("%p allocated\n", &fork_arr);
 	if (!*fork_arr)
 	{
-		uninitialise_mutex(mutex_arr, num);
+		uninit_mutex(mutex_arr, num);
 		return (malloc_error());
 	}
 	i = 0;
@@ -54,7 +32,7 @@ int	initialise_forks(int **fork_arr, int num, pthread_mutex_t *mutex_arr)
 	return (0);
 }
 
-static int	initialise_philos(t_data *data, t_philo **philo_arr)
+static int	init_philos(t_data *data, t_philo **philo_arr)
 {
 	int	i;
 
@@ -95,7 +73,7 @@ int	allocate_philos(t_data *data)
 	if (!philo_arr)
 	{
 		free(data->forks);
-		uninitialise_mutex(data->mutex_arr, data->args->philo_num);
+		uninit_mutex(data->mutex_arr, data->args->philo_num);
 		return (malloc_error());
 	}
 	while (i < data->args->philo_num)
@@ -106,17 +84,17 @@ int	allocate_philos(t_data *data)
 		{
 			free(data->forks);
 			free_philos(philo_arr, i - 1);
-			uninitialise_mutex(data->mutex_arr, data->args->philo_num);
+			uninit_mutex(data->mutex_arr, data->args->philo_num);
 			return (malloc_error());
 		}
 		i++;
 	}
-	initialise_philos(data, philo_arr);
+	init_philos(data, philo_arr);
 	data->philo_arr = philo_arr;
 	return (0);
 }
 
-int	initialise_even_threads(t_data *data)
+int	init_even_threads(t_data *data)
 {
 	int	i;
 
@@ -132,7 +110,7 @@ int	initialise_even_threads(t_data *data)
 	return (0);
 }
 
-int	initialise_odd_threads(t_data *data)
+int	init_odd_threads(t_data *data)
 {
 	int	i;
 

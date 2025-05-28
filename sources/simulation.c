@@ -6,7 +6,7 @@
 /*   By: smoon <smoon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 13:02:03 by smoon             #+#    #+#             */
-/*   Updated: 2025/05/26 13:23:59 by smoon            ###   ########.fr       */
+/*   Updated: 2025/05/27 16:36:09 by smoon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,9 @@ void	*start_sim(void *philo_ptr)
 	philo = (t_philo *)philo_ptr;
 	while (ready_to_start(philo->args) == 0)
 		usleep(1);
-	if (philo->num % 2 == 0)
+	if (philo->args->philo_num == 1)
+		single_eating(philo);
+	else if (philo->num % 2 == 0)
 		even_eating(philo);
 	else
 		odd_eating(philo);

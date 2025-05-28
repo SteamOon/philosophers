@@ -6,7 +6,7 @@
 #    By: smoon <smoon@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/22 15:05:46 by smoon             #+#    #+#              #
-#    Updated: 2025/05/26 13:17:08 by smoon            ###   ########.fr        #
+#    Updated: 2025/05/28 10:45:33 by smoon            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,12 +27,13 @@ SOURCES = sources/main.c \
 			sources/ft_atoi.c \
 			sources/ft_isdigit.c \
 			sources/ft_putstr_fd.c \
-			sources/initialisers.c \
+			sources/init.c \
+			sources/init2.c \
 			sources/monitoring.c \
 			sources/printing.c \
 			sources/simulation.c \
 			sources/testing.c \
-			sources/uninitialisers.c \
+			sources/uninit.c \
 			sources/utils.c
 
 OBJECTS = $(patsubst $(SRC_DIR)/%.c, $(OBJ_DIR)/%.o, $(SOURCES))

@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   uninitialisers.c                                   :+:      :+:    :+:   */
+/*   uninit.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: smoon <smoon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 14:05:07 by smoon             #+#    #+#             */
-/*   Updated: 2025/05/23 12:17:59 by smoon            ###   ########.fr       */
+/*   Updated: 2025/05/28 10:45:04 by smoon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo.h"
 
-int	uninitialise_mutex(pthread_mutex_t *mutex_arr, int num)
+int	uninit_mutex(pthread_mutex_t *mutex_arr, int num)
 {
 	num = num - 1;
 	while (num >= 0)
@@ -42,7 +42,7 @@ int	free_philos(t_philo **philo_arr, int num)
 	return (0);
 }
 
-int	join_even_threads(pthread_t **thread_arr, int num)
+static int	join_even_threads(pthread_t **thread_arr, int num)
 {
 	int	i;
 
@@ -56,7 +56,7 @@ int	join_even_threads(pthread_t **thread_arr, int num)
 	return (0);
 }
 
-int	join_odd_threads(pthread_t **thread_arr, int num)
+static int	join_odd_threads(pthread_t **thread_arr, int num)
 {
 	int	i;
 
@@ -68,4 +68,19 @@ int	join_odd_threads(pthread_t **thread_arr, int num)
 		i += 2;
 	}
 	return (0);
+}
+
+void	wait_for_threads_and_end(t_data *data)
+{
+	join_odd_threads(&data->thread_arr, data->args->philo_num);
+	join_even_threads(&data->thread_arr, data->args->philo_num);
+	pthread_join(data->monitor, NULL);
+	uninit_mutex(data->mutex_arr, data->args->philo_num);
+	pthread_mutex_destroy(&data->args->run_mutex);
+	pthread_mutex_destroy(&data->args->printf_mutex);
+	pthread_mutex_destroy(&data->args->start_t_mutex);
+	free_philos(data->philo_arr, data->args->philo_num);
+	free(data->thread_arr);
+	free(data->forks);
+	free(data->args);
 }

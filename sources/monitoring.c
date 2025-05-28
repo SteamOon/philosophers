@@ -6,7 +6,7 @@
 /*   By: smoon <smoon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 14:21:56 by smoon             #+#    #+#             */
-/*   Updated: 2025/05/27 11:17:39 by smoon            ###   ########.fr       */
+/*   Updated: 2025/05/28 10:06:53 by smoon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,18 +37,20 @@ static int	has_eaten_enough(t_philo *philo)
 
 void	*monitor_threads(t_data	*data)
 {
-	int			i;
+	int	i;
+	int	time;
 
 	while (1)
 	{
 		i = 0;
 		while (i < data->args->philo_num)
 		{
-			if (data->args->time_to_die + get_last_eat_time(data->philo_arr[i])
-				<= cur_time(data->args->start_time))
+			time = cur_time(data->args->start_time);
+			if (get_last_eat_time(data->philo_arr[i]) + data->args->time_to_die
+				<= time)
 			{
+				died_print(time, data->philo_arr[i]->num, &data->args->printf_mutex);
 				pthread_mutex_lock(&data->args->run_mutex);
-				died_print(data->args->start_time, data->philo_arr[i]->num, &data->args->printf_mutex);
 				data->args->run_flag = 0;
 				pthread_mutex_unlock(&data->args->run_mutex);
 				break ;
@@ -74,6 +76,7 @@ void	*monitor_threads(t_data	*data)
 		}
 		if (is_running(data->args) == 0)
 			break ;
+		usleep(500);
 	}
 	return (NULL);
 }

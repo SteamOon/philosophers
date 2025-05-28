@@ -6,7 +6,7 @@
 /*   By: smoon <smoon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 13:18:50 by smoon             #+#    #+#             */
-/*   Updated: 2025/05/19 14:28:36 by smoon            ###   ########.fr       */
+/*   Updated: 2025/05/28 10:14:05 by smoon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int	malloc_error(void)
 
 static int	non_numeric_error(void)
 {
-	ft_putstr_fd("Please enter numeric arguments.\n", 2);
+	ft_putstr_fd("Please enter positive numeric arguments.\n", 2);
 	return (1);
 }
 

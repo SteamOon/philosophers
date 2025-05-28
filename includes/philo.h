@@ -6,7 +6,7 @@
 /*   By: smoon <smoon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 10:36:01 by smoon             #+#    #+#             */
-/*   Updated: 2025/05/27 10:30:18 by smoon            ###   ########.fr       */
+/*   Updated: 2025/05/28 10:45:04 by smoon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ typedef struct s_data
 //eating
 void			*even_eating(t_philo *philo);
 void			*odd_eating(t_philo *philo);
+void			*single_eating(t_philo *philo);
 
 //errors
 int				arg_num_error(int argc);
@@ -74,19 +75,20 @@ int				ft_atoi(const char *str);
 int				ft_isdigit(int c);
 void			ft_putstr_fd(char *s, int fd);
 
-//initialisers
+//init
 int				allocate_philos(t_data *data);
-int				initialise_forks(int **fork_arr, int num, pthread_mutex_t *mutex_arr);
-pthread_mutex_t	*initialise_mutex(int num);
-int				initialise_even_threads(t_data *data);
-int				initialise_odd_threads(t_data *data);
+int				init_forks(int **fork_arr, int num, pthread_mutex_t *mutex_arr);
+int				init_even_threads(t_data *data);
+int				init_odd_threads(t_data *data);
+//init2
+pthread_mutex_t	*init_mutex(int num);
 
 //monitoring
 void			*monitor_threads(t_data *data);
 
 //printing
 int				eat_print(long start_time, int num, pthread_mutex_t *mutex);
-int				died_print(long start_time, int num, pthread_mutex_t *mutex);
+int				died_print(int time, int num, pthread_mutex_t *mutex);
 int				fork_print(long start_time, int num, pthread_mutex_t *mutex);
 int				sleep_print(long start_time, int num, pthread_mutex_t *mutex);
 int				think_print(long start_time, int num, pthread_mutex_t *mutex);
@@ -101,16 +103,16 @@ void			print_philos(t_philo **philo_arr);
 void			print_forks(t_data *data);
 int				try_fork_print(long start_time, int num, pthread_mutex_t *mutex);
 
-//uninitialisers
+//uninit
 int				free_philos(t_philo **philo_arr, int num);
-int				uninitialise_mutex(pthread_mutex_t *mutex_arr, int num);
-int				join_even_threads(pthread_t **thread_arr, int num);
-int				join_odd_threads(pthread_t **thread_arr, int num);
+int				uninit_mutex(pthread_mutex_t *mutex_arr, int num);
+void			wait_for_threads_and_end(t_data *data);
 
 //utils
 long			msecs_now(void);
 char			is_running(t_args *args);
 int				cur_time(long start_time);
 long			start_time(void);
+int				precise_wait(int wait);
 
 #endif

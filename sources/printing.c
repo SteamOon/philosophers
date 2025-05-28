@@ -6,7 +6,7 @@
 /*   By: smoon <smoon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 11:23:03 by smoon             #+#    #+#             */
-/*   Updated: 2025/05/26 14:16:32 by smoon            ###   ########.fr       */
+/*   Updated: 2025/05/27 14:04:56 by smoon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,12 +56,10 @@ int	think_print(long start_time, int num, pthread_mutex_t *mutex)
 	return (time);
 }
 
-int	died_print(long start_time, int num, pthread_mutex_t *mutex)
+int	died_print(int time, int num, pthread_mutex_t *mutex)
 {
-	int	time;
-
 	pthread_mutex_lock(mutex);
-	time = cur_time(start_time);
+	// time = cur_time(start_time);
 	printf("%d %d died\n", time, num);
 	pthread_mutex_unlock(mutex);
 	return (time);
