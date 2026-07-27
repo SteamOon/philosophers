@@ -3,15 +3,15 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: smoon <smoon@student.42.fr>                +#+  +:+       +#+         #
+#    By: smoon <smoon@student.42berlin.de>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/22 15:05:46 by smoon             #+#    #+#              #
-#    Updated: 2025/05/28 12:22:22 by smoon            ###   ########.fr        #
+#    Updated: 2026/07/27 16:02:59 by smoon            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -g #-fsanitize=thread
+CFLAGS = -Wall -Wextra -Werror #-g -fsanitize=thread
 
 INCLUDES = -I./includes
 
