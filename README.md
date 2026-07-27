@@ -1,7 +1,6 @@
 # Philosophers
 
-This repository contains a C implementation of the classic 42 School "Philosophers" project.
-It simulates the dining philosophers problem using threads and mutexes, where each philosopher alternates between thinking, eating, and sleeping.
+This repository contains a C implementation of the dining philosophers problem using threads and mutexes, where each philosopher alternates between thinking, eating, and sleeping.
 
 ## Build
 
